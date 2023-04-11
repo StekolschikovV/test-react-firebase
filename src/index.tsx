@@ -5,10 +5,11 @@ import {
   BrowserRouter as Router,
   Routes
 } from "react-router-dom";
-import Nav from './components/nav';
+import Nav from './component/nav';
 import Home from './home';
 import './index.css';
 import Login from './login';
+import Setting from './page/setting';
 import Register from './register';
 import reportWebVitals from './reportWebVitals';
 import Test from './test';
@@ -25,6 +26,7 @@ root.render(
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
         <Route path='/test' element={<Test />} />
+        <Route path='/setting' element={<Setting />} />
       </Routes>
     </Router>
   </React.StrictMode>

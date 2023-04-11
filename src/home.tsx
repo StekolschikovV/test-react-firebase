@@ -52,7 +52,6 @@ const Home = () => {
   }
 
   useEffect(() => {
-
     listAll(listRef)
       .then(async (res) => {
         const urls = await Promise.all(res.items.map(img => getDownloadURL(img)))
@@ -69,7 +68,6 @@ const Home = () => {
     <p>{percent} "% done"</p>
     <div style={{ padding: "20px" }}>
       {imgs.map(img => <img key={img} src={img} style={{ width: "250px", display: "block" }} />)}
-
     </div>
   </>
 
