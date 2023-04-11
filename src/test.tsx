@@ -1,25 +1,25 @@
 import { getDownloadURL, listAll, ref, uploadBytesResumable } from "firebase/storage";
 import { useEffect, useState } from "react";
-import {
-  useNavigate
-} from "react-router-dom";
 import { storage } from "./firebase";
 
-const Home = () => {
 
-  const [percent, setPercent] = useState(0);
+const Test = () => {
+
   const [refreshImgs, setRefreshImgs] = useState(0);
   const [imgs, setImgs] = useState<string[]>([])
-  let navigate = useNavigate();
+  const [percent, setPercent] = useState(0);
 
   const listRef = ref(storage, 'files');
 
   useEffect(() => {
-    let authToken = sessionStorage.getItem('Auth Token')
-    if (!authToken) {
-      navigate('/login')
-    }
-  }, [])
+    listAll(listRef)
+      .then(async (res) => {
+        const urls = await Promise.all(res.items.map(img => getDownloadURL(img)))
+        setImgs(urls)
+      }).catch((error) => {
+        console.log('error', error);
+      });
+  }, [refreshImgs])
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     console.log('event', event);
@@ -51,28 +51,17 @@ const Home = () => {
     }
   }
 
-  useEffect(() => {
-
-    listAll(listRef)
-      .then(async (res) => {
-        const urls = await Promise.all(res.items.map(img => getDownloadURL(img)))
-        setImgs(urls)
-      }).catch((error) => {
-        console.log('error', error);
-      });
-  }, [refreshImgs])
-
   return <>
-    Home
+    Test
 
     <input type="file" accept="image/*" onChange={handleChange} />
     <p>{percent} "% done"</p>
+
     <div style={{ padding: "20px" }}>
       {imgs.map(img => <img src={img} style={{ width: "250px", display: "block" }} />)}
-
     </div>
   </>
 
 }
 
-export default Home
+export default Test
