@@ -16,9 +16,14 @@ const Login = () => {
     e.preventDefault()
     signInWithEmailAndPassword(auth, email, password)
       .then((response) => {
+        // @ts-ignore
+        console.log("!!!", response.user.accessToken)
         navigate('/')
         // @ts-ignore
-        sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
+        sessionStorage.setItem('Auth Token', response.user.accessToken)
+        // sessionStorage.setItem('Auth Token', response.user.refreshToken)
+        // sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
+
       })
       .catch((error) => {
         console.log(error.code)

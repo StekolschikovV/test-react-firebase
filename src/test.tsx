@@ -58,7 +58,7 @@ const Test = () => {
     <p>{percent} "% done"</p>
 
     <div style={{ padding: "20px" }}>
-      {imgs.map(img => <img src={img} style={{ width: "250px", display: "block" }} />)}
+      {imgs.map(img => <img key={img} src={img} style={{ width: "250px", display: "block" }} />)}
     </div>
   </>
 
