@@ -8,7 +8,7 @@ import {
 import Nav from './component/nav';
 import Home from './home';
 import './index.css';
-import Login from './login';
+import Login from './page/login';
 import Setting from './page/setting';
 import Register from './register';
 import reportWebVitals from './reportWebVitals';

@@ -1,4 +1,4 @@
-import { updateProfile } from "firebase/auth";
+import { updatePassword, updateProfile } from "firebase/auth";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ const Setting = () => {
 
   const [name, setName] = useState("")
   const [file, setFile] = useState<FileList | null>()
+  const [password, setPassword] = useState<string | null>()
 
   let navigate = useNavigate();
 
@@ -20,7 +21,6 @@ const Setting = () => {
 
   const uploadAvate = (): Promise<null | string> => {
     return new Promise<string>((resolve, reject) => {
-      console.log('file', file);
       if (file && file?.length > 0) {
         const _file = file[0]
         const fileExtension = _file?.name.split(".").slice(-1)
@@ -37,7 +37,6 @@ const Setting = () => {
           }
         );
       } else {
-        console.log('1');
         reject(null)
       }
     });
@@ -48,10 +47,13 @@ const Setting = () => {
     const avatarUrl = await uploadAvate().then(e => e).catch(() => null)
     const currentUser = auth?.currentUser
     if (currentUser) {
-      console.log({
-        displayName: name || currentUser.displayName,
-        photoURL: avatarUrl || currentUser.photoURL,
-      });
+      if (password) {
+        updatePassword(currentUser, password).then(() => {
+          console.log('1');
+        }).catch((error) => {
+          console.log('2', error);
+        });
+      }
       updateProfile(currentUser, {
         displayName: name || currentUser.displayName,
         photoURL: avatarUrl || currentUser.photoURL,
@@ -70,6 +72,7 @@ const Setting = () => {
   return <>
     <input type="file" accept="image/*" onChange={handleChange} />
     <input type="text" onChange={(e) => setName(e.target.value)} />
+    <input type="password" onChange={(e) => setPassword(e.target.value)} />
     <button onClick={() => update()}>Update</button>
   </>
 

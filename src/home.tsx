@@ -10,6 +10,7 @@ const Home = () => {
   const [percent, setPercent] = useState(0);
   const [refreshImgs, setRefreshImgs] = useState(0);
   const [imgs, setImgs] = useState<string[]>([])
+
   let navigate = useNavigate();
 
   const listRef = ref(storage, 'files');
