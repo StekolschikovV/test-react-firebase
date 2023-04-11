@@ -1,4 +1,4 @@
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { FacebookAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { useState } from "react";
 import {
   useNavigate
@@ -37,25 +37,39 @@ const Login = () => {
       })
   }
 
+  const singInWithFacebook = () => {
+    const provider = new FacebookAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log('result', result);
+        const credential = FacebookAuthProvider.credentialFromResult(result);
+        const accessToken = credential?.accessToken;
+        sessionStorage.setItem('Auth Token', `${accessToken}`)
+        navigate('/')
+      }).catch((error) => {
+        console.log('error', error);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+      });
+  }
+
+
   const singInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result);
         const token = credential?.accessToken;
         const user = result.user;
         sessionStorage.setItem('Auth Token', `${token}`)
         navigate('/')
       }).catch((error) => {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        // The email of the user's account used.
         const email = error.customData.email;
-        // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
-        // ...
       });
   }
 
@@ -66,6 +80,7 @@ const Login = () => {
       <input type="text" placeholder="password" onChange={e => setPassword(e.target.value)} />
       <button type="submit">Login</button>
       <button onClick={singInWithGoogle}>Google</button>
+      <button onClick={singInWithFacebook}>Facebook</button>
     </form>
   </>
 
