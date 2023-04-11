@@ -1,4 +1,4 @@
-import { FacebookAuthProvider, GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { FacebookAuthProvider, GithubAuthProvider, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { useState } from "react";
 import {
   useNavigate
@@ -91,12 +91,19 @@ const Login = () => {
       });
   }
 
+  const passwordReset = async () => {
+    const result = await sendPasswordResetEmail(auth, email)
+    console.log('result', result);
+  }
+
   return <>
     Login
     <form onSubmit={(e) => onSubmit(e)} style={{ display: "flex", flexDirection: "column", width: "600px", margin: "auto" }}>
       <input type="text" placeholder="email" onChange={e => setEmail(e.target.value)} />
       <input type="text" placeholder="password" onChange={e => setPassword(e.target.value)} />
       <button type="submit">Login</button>
+      <button onClick={passwordReset}>passwordReset</button>
+      <button onClick={singInWithGoogle}>Google</button>
       <button onClick={singInWithGoogle}>Google</button>
       <button onClick={singInWithFacebook}>Facebook</button>
       <button onClick={singInWithGitHub}>GitHub</button>
