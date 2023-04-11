@@ -1,4 +1,4 @@
-import { FacebookAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { FacebookAuthProvider, GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { useState } from "react";
 import {
   useNavigate
@@ -35,6 +35,24 @@ const Login = () => {
           console.error('Please check the Email');
         }
       })
+  }
+
+  const singInWithGitHub = () => {
+    const provider = new GithubAuthProvider();
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        console.log('result', result);
+        const credential = GithubAuthProvider.credentialFromResult(result);
+        const token = credential?.accessToken;
+        sessionStorage.setItem('Auth Token', `${token}`)
+        navigate('/')
+      }).catch((error) => {
+        console.log('error', error);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        const email = error.customData.email;
+        const credential = GoogleAuthProvider.credentialFromError(error);
+      });
   }
 
   const singInWithFacebook = () => {
@@ -81,6 +99,7 @@ const Login = () => {
       <button type="submit">Login</button>
       <button onClick={singInWithGoogle}>Google</button>
       <button onClick={singInWithFacebook}>Facebook</button>
+      <button onClick={singInWithGitHub}>GitHub</button>
     </form>
   </>
 

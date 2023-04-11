@@ -11,6 +11,7 @@ const Nav = () => {
   const [email, setEmail] = useState("")
   const [name, setName] = useState("")
   const [photo, setPhoto] = useState("")
+  const [isLogin, setIsLogin] = useState(false)
 
   let navigate = useNavigate();
 
@@ -24,9 +25,11 @@ const Nav = () => {
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
+      console.log("currentUser", currentUser)
       setEmail(currentUser?.email || "")
       setName(currentUser?.displayName || "")
       setPhoto(currentUser?.photoURL || "")
+      setIsLogin(currentUser?.email || currentUser?.displayName ? true : false)
     });
   }, []);
 
@@ -36,11 +39,11 @@ const Nav = () => {
       <Link to="/test">Test</Link>
     </div>
     <div className="contols" style={{ display: "flex", gridGap: "10px" }}>
-      {email && <>
+      {isLogin && <>
         <a href="#" onClick={logOut}>Logout</a>
         <Link to="/setting">Setting</Link>
       </>}
-      {!email && <>
+      {!isLogin && <>
         <Link to="/login">Login</Link>
         <Link to="/register">Register</Link>
       </>}
