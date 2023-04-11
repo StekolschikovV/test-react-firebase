@@ -33,7 +33,7 @@ const Nav = () => {
     });
   }, []);
 
-  return <nav style={{ display: "flex", gridGap: "30px", padding: "20px", justifyContent: "space-between" }}>
+  return <nav style={{ background: "red", display: "flex", gridGap: "30px", padding: "20px", justifyContent: "space-between" }}>
     <div className="links" style={{ display: "flex", gridGap: "10px" }}>
       <Link to="/">Главная</Link>
       <Link to="/test">Test</Link>
