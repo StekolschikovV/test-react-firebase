@@ -1,4 +1,4 @@
-import { FacebookAuthProvider, GithubAuthProvider, GoogleAuthProvider, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
+import { FacebookAuthProvider, GithubAuthProvider, GoogleAuthProvider, createUserWithEmailAndPassword, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { useState } from "react";
 import {
   useNavigate
@@ -17,14 +17,8 @@ const Login = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then((response) => {
         // @ts-ignore
-        console.log("!!!", response.user.accessToken)
-        // @ts-ignore
         sessionStorage.setItem('Auth Token', response.user.accessToken)
         navigate('/')
-
-        // sessionStorage.setItem('Auth Token', response.user.refreshToken)
-        // sessionStorage.setItem('Auth Token', response._tokenResponse.refreshToken)
-
       })
       .catch((error) => {
         console.log(error.code)
@@ -35,6 +29,17 @@ const Login = () => {
           console.error('Please check the Email');
         }
       })
+  }
+  const register = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log("!!!", userCredential)
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
   }
 
   const singInWithGitHub = () => {
@@ -102,8 +107,8 @@ const Login = () => {
       <input type="text" placeholder="email" onChange={e => setEmail(e.target.value)} />
       <input type="text" placeholder="password" onChange={e => setPassword(e.target.value)} />
       <button type="submit">Login</button>
+      <button onClick={register}>Register</button>
       <button onClick={passwordReset}>passwordReset</button>
-      <button onClick={singInWithGoogle}>Google</button>
       <button onClick={singInWithGoogle}>Google</button>
       <button onClick={singInWithFacebook}>Facebook</button>
       <button onClick={singInWithGitHub}>GitHub</button>
