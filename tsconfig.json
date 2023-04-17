@@ -1,5 +1,8 @@
 {
   "compilerOptions": {
+    "paths": {
+      "@firebase/firestore": ["node_modules/@firebase/firestore"]
+    },
     "target": "es5",
     "lib": [
       "dom",
