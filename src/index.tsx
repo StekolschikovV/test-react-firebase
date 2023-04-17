@@ -6,8 +6,8 @@ import {
   Routes
 } from "react-router-dom";
 import Nav from './component/nav';
-import Home from './home';
 import './index.css';
+import Home from './page/home';
 import Login from './page/login';
 import Setting from './page/setting';
 import Register from './register';

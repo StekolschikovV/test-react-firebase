@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import {
   useNavigate
 } from "react-router-dom";
-import { storage } from "./firebase";
+import Records from "../component/records";
+import { storage } from "../firebase";
 
 const Home = () => {
 
@@ -64,6 +65,10 @@ const Home = () => {
 
   return <>
     Home
+
+
+
+    <Records />
 
     <input type="file" accept="image/*" onChange={handleChange} />
     <p>{percent} "% done"</p>
